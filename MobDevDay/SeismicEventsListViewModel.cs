@@ -13,7 +13,6 @@ using System.Net.Http;
 using System.Xml.Linq;
 using System.Linq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace MobDevDay
@@ -21,9 +20,11 @@ namespace MobDevDay
 	public class SeismicEvent 
 	{
 		public string Title {get;set;}
-		public string Longitude { get; set; }
-		public string Latitude { get; set; }
+		public double Longitude { get; set; }
+		public double Latitude { get; set; }
+		public string Link { get; set; }
 		public DateTime Date { get; set; }
+		public string Description { get; set; }
 	}
 
 	public class SeismicEventsListViewModel : INotifyPropertyChanged
@@ -53,7 +54,7 @@ namespace MobDevDay
 		}
 			
 		public ICommand RefreshCommand { get { return new Command (Refresh); }}
-		void Refresh ()
+		async void Refresh ()
 		{
 			XNamespace geo = "http://www.w3.org/2003/01/geo/wgs84_pos#";
 			if (IsBusy)
@@ -61,15 +62,17 @@ namespace MobDevDay
 			IsBusy = true;
 
 			var client = new HttpClient ();
-			var response = client.GetStringAsync (new Uri (url)).Result;
+			var response = await client.GetStringAsync (new Uri (url));
 
 			var document = XDocument.Parse (response);
 			var eventlist = from item in document.Descendants ("item")
 			             select new SeismicEvent () { 
 				Title = item.Element("title").Value,
-				Latitude = item.Element(geo + "lat").Value,
-				Longitude = item.Element(geo + "long").Value,
+				Latitude = double.Parse(item.Element(geo + "lat").Value),
+				Longitude = double.Parse(item.Element(geo + "long").Value),
 				Date = DateTime.Parse (item.Element("pubDate").Value),
+				Link = item.Element ("link").Value,
+				Description = item.Element ("description").Value,
 			};
 
 			Events = eventlist.ToList ();

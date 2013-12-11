@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -94,6 +94,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h%402x.png" />
     <BundleResource Include="Resources\Default%402x.png" />
+    <BundleResource Include="Resources\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -106,8 +107,13 @@
     <Compile Include="SeismicListViewController.designer.cs">
       <DependentUpon>SeismicListViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="SeismicListDataSource.cs" />
+    <Compile Include="EventViewController.cs" />
+    <Compile Include="EventViewController.designer.cs">
+      <DependentUpon>EventViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\MobDevDay\MobDevDay.Core.csproj">
       <Project>{9400B6AD-91EE-4E1D-8D1C-A5331D9589A6}</Project>
@@ -116,5 +122,6 @@
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="SeismicListViewController.xib" />
+    <InterfaceDefinition Include="EventViewController.xib" />
   </ItemGroup>
 </Project>
